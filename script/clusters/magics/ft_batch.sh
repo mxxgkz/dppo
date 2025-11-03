@@ -24,11 +24,13 @@ cd /home/guo/RL/dppo/   #$PBS_O_WORKDIR
 
 source activate "dppo_310"
 
+export PYTHONPATH="\${PWD}:\$PYTHONPATH"
 export LD_LIBRARY_PATH="/home/guo/.mujoco/mujoco210/bin:/usr/lib/nvidia:\$LD_LIBRARY_PATH"
 export DPPO_DATA_DIR="/home/guo/RL/dppo/data"
 export DPPO_LOG_DIR="/home/guo/RL/dppo/log"
 
 echo "=== Debug LD_LIBRARY_PATH ==="
+echo "PYTHONPATH: \$PYTHONPATH"
 echo "LD_LIBRARY_PATH: \$LD_LIBRARY_PATH"
 echo "Python path: \$(which python)"
 
