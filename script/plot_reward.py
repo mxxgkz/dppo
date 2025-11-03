@@ -15,6 +15,7 @@ def parse_log_file(log_path):
     train_rewards = []
     eval_iterations = []
     eval_rewards = []
+    eval_success_rates = []
     
     with open(log_path, 'r') as f:
         for line in f:
@@ -28,27 +29,37 @@ def parse_log_file(log_path):
                 train_steps.append(step)
                 train_rewards.append(reward)
             
-            # Parse eval reward lines like:
-            # "eval: success rate   1.0000 | avg episode reward 1424.7304 | ..."
-            eval_match = re.search(r'eval:.*?avg episode reward\s+([\d.]+)', line)
+            # Parse eval lines like:
+            # "eval: success rate   0.6500 | avg episode reward  77.9650 | avg best reward   0.6500"
+            eval_match = re.search(r'eval:.*?success rate\s+([\d.]+).*?avg episode reward\s+([\d.]+)', line)
             if eval_match:
-                reward = float(eval_match.group(1))
+                success_rate = float(eval_match.group(1))
+                reward = float(eval_match.group(2))
                 # Use current training iteration (last seen) for eval
                 eval_iterations.append(len(train_steps))
+                eval_success_rates.append(success_rate)
                 eval_rewards.append(reward)
     
-    return train_steps, train_rewards, eval_iterations, eval_rewards
+    return train_steps, train_rewards, eval_iterations, eval_rewards, eval_success_rates
 
 
 def plot_rewards(log_path, save_path=None, show=True):
-    """Plot training and evaluation rewards"""
-    train_steps, train_rewards, eval_iterations, eval_rewards = parse_log_file(log_path)
+    """Plot training and evaluation rewards, including success rate"""
+    train_steps, train_rewards, eval_iterations, eval_rewards, eval_success_rates = parse_log_file(log_path)
     
-    if not train_rewards and not eval_rewards:
+    if not train_rewards and not eval_rewards and not eval_success_rates:
         print(f"No reward data found in {log_path}")
         return
     
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+    # Determine number of subplots (3 if we have success rates, otherwise 2)
+    has_success_rates = len(eval_success_rates) > 0
+    num_plots = 3 if has_success_rates else 2
+    
+    fig, axes = plt.subplots(num_plots, 1, figsize=(10, 4 * num_plots))
+    if num_plots == 2:
+        ax1, ax2 = axes
+    else:
+        ax1, ax2, ax3 = axes
     
     # Plot training rewards
     if train_steps and train_rewards:
@@ -67,6 +78,16 @@ def plot_rewards(log_path, save_path=None, show=True):
         ax2.set_title('Evaluation Rewards Over Time')
         ax2.grid(True, alpha=0.3)
         ax2.legend()
+    
+    # Plot success rate if available
+    if has_success_rates and eval_iterations:
+        ax3.plot(eval_iterations, eval_success_rates, 'g-o', label='Success Rate', linewidth=2, markersize=6)
+        ax3.set_xlabel('Training Iteration')
+        ax3.set_ylabel('Success Rate')
+        ax3.set_title('Success Rate Over Time')
+        ax3.set_ylim(0, 1)  # Success rate is between 0 and 1
+        ax3.grid(True, alpha=0.3)
+        ax3.legend()
     
     plt.tight_layout()
     

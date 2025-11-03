@@ -1,8 +1,6 @@
-# gym
 walker2d1 7 8 32 ft_ppo_diffusion_mlp cfg/gym/finetune/walker2d-v2
 hopper2d1 3 8 32 ft_ppo_diffusion_mlp cfg/gym/finetune/hopper-v2
 
-# robomimic
 can1 3 8 32 ft_ppo_diffusion_mlp cfg/robomimic/finetune/can
 can2 3 8 32 ft_ppo_diffusion_unet cfg/robomimic/finetune/can
 lift1 3 8 32 ft_ppo_diffusion_mlp cfg/robomimic/finetune/lift
@@ -12,6 +10,3 @@ square2 3 8 32 ft_ppo_diffusion_unet cfg/robomimic/finetune/square
 transport1 3 8 32 ft_ppo_diffusion_mlp cfg/robomimic/finetune/transport
 transport2 3 8 32 ft_ppo_diffusion_unet cfg/robomimic/finetune/transport
 
-# d3il
-avoid_m11 3 8 32 ft_ppo_diffusion_mlp cfg/d3il/finetune/avoid_m1
-avoid_m12 3 8 32 ft_ppo_diffusion_unet cfg/d3il/finetune/avoid_m1

@@ -43,6 +43,7 @@ sys.stderr = open(sys.stderr.fileno(), mode="w", buffering=1)
 def main(cfg: OmegaConf):
     # resolve immediately so all the ${now:} resolvers will use the same time.
     OmegaConf.resolve(cfg)
+    print(cfg.keys())
 
     # For pre-training: download dataset if needed
     if "train_dataset_path" in cfg and not os.path.exists(cfg.train_dataset_path):
