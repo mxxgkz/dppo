@@ -6,6 +6,7 @@ data/
 log/
 logs/
 checkpoints/
+notebooks/
 .github/
 out/
 err/

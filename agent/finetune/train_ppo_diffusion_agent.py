@@ -116,13 +116,19 @@ class TrainPPODiffusionAgent(TrainPPOAgent):
                     )
                     output_venv = (
                         samples.trajectories.cpu().numpy()
-                    )  # n_env x horizon x act
+                    )  # n_env x horizon x act_dim
                     chains_venv = (
                         samples.chains.cpu().numpy()
-                    )  # n_env x denoising x horizon x act
+                    )  # n_env x denoising x horizon x act_dim
                 action_venv = output_venv[:, : self.act_steps]
 
                 # Apply multi-step action
+                # for hopper-v2:
+                # obs_venv, # OrderedDict['state': np.ndarray, 40x1x11]
+                # reward_venv, # np.ndarray, 40x1
+                # terminated_venv, # np.ndarray, 40x1
+                # truncated_venv, # np.ndarray, 40x1
+                # info_venv, # list of dicts, 40x1
                 (
                     obs_venv,
                     reward_venv,
@@ -137,7 +143,7 @@ class TrainPPODiffusionAgent(TrainPPOAgent):
                     )  # n_envs x act_steps x obs_dim
                     obs_full_trajs = np.vstack(
                         (obs_full_trajs, obs_full_venv.transpose(1, 0, 2))
-                    )
+                    ) 
                 obs_trajs["state"][step] = prev_obs_venv["state"]
                 chains_trajs[step] = chains_venv
                 reward_trajs[step] = reward_venv
@@ -209,6 +215,7 @@ class TrainPPODiffusionAgent(TrainPPOAgent):
                         "s e ... -> (s e) ...",
                     )
                     obs_ts_k = torch.split(obs_k, self.logprob_batch_size, dim=0)
+                    # ith batch is obs_ts[i]
                     for i, obs_t in enumerate(obs_ts_k):
                         obs_ts[i]["state"] = obs_t
                     values_trajs = np.empty((0, self.n_envs))
