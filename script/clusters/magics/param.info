@@ -1,1 +1,2 @@
-lift1 3 8 32 ft_ppo_diffusion_mlp cfg/robomimic/finetune/lift
+avoid_m11 6 8 32 ft_ppo_diffusion_mlp cfg/d3il/finetune/avoid_m1
+avoid_m12 6 8 32 ft_ppo_diffusion_unet cfg/d3il/finetune/avoid_m1

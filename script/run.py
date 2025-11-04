@@ -43,7 +43,11 @@ sys.stderr = open(sys.stderr.fileno(), mode="w", buffering=1)
 def main(cfg: OmegaConf):
     # resolve immediately so all the ${now:} resolvers will use the same time.
     OmegaConf.resolve(cfg)
-    log.info(cfg.robomimic_env_cfg_path)
+    log.info(f"{cfg.keys()}")
+    if "env_name" in cfg:
+        log.info(f"{cfg.env_name}")
+    if "robomimic_env_cfg_path" in cfg:
+        log.info(f"{cfg.robomimic_env_cfg_path}")
 
     # For pre-training: download dataset if needed
     if "train_dataset_path" in cfg and not os.path.exists(cfg.train_dataset_path):
