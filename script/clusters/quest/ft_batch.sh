@@ -31,19 +31,22 @@ cd /projects/p30309/RL/dppo/   #$PBS_O_WORKDIR
 
 # source /home/kzy816/miniconda3_4_12_0_conda.sh
 
+source ~/.bashrc
+dppo_st
+
 conda init bash
 
 which conda
 
 conda activate "dppo_310"
 
-export LD_LIBRARY_PATH="/home/kzy816/.mujoco/mujoco210/bin:/usr/lib/nvidia:\$LD_LIBRARY_PATH"
-export DPPO_DATA_DIR="/projects/p30309/RL/dppo/data"
-export DPPO_LOG_DIR="/projects/p30309/RL/dppo/log"
+# export LD_LIBRARY_PATH="/home/kzy816/.mujoco/mujoco210/bin:/usr/lib/nvidia:\$LD_LIBRARY_PATH"
+# export DPPO_DATA_DIR="/projects/p30309/RL/dppo/data"
+# export DPPO_LOG_DIR="/projects/p30309/RL/dppo/log"
 
-echo "=== Debug LD_LIBRARY_PATH ==="
-echo "LD_LIBRARY_PATH: \$LD_LIBRARY_PATH"
-echo "Python path: \$(which python)"
+# echo "=== Debug LD_LIBRARY_PATH ==="
+# echo "LD_LIBRARY_PATH: \$LD_LIBRARY_PATH"
+# echo "Python path: \$(which python)"
 
 # # A command you actually want to execute:
 # java -jar <someinput> <someoutput>
